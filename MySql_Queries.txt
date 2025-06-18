@@ -1,0 +1,195 @@
+Create database Bank_Loan_DB;
+use bank_loan_db;
+select * from financial_loan;
+
+Total Loan Applications
+
+select count(id) as Total_Loan_Applications from financial_loan
+
+MTD Loan Application
+
+select count(id) as Total_Loan_Applications from financial_loan
+WHERE MONTH(issue_date) = 12
+
+PMTD
+select count(id) as Total_Loan_Applications from financial_loan
+WHERE MONTH(issue_date) = 11
+
+Total Fund Amount
+Select sum(loan_Amount) as Total_fund_amount from financial_loan
+
+MTD Total fund amount
+Select sum(loan_Amount) as Total_fund_amount from financial_loan
+Where Month(issue_date) = 12
+
+PMTD Total fund amount
+Select sum(loan_Amount) as Total_fund_amount from financial_loan
+Where Month(issue_date) = 11
+
+Total Amount Received
+Select sum(total_payment) as total_Amount_Received from financial_loan
+
+MTD Total Amount Received
+Select sum(total_payment) as total_Amount_Received from financial_loan
+Where Month(issue_date) = 12
+
+PMTD Total Amount Received
+Select sum(total_payment) as total_Amount_Received from financial_loan
+Where Month(issue_date) = 11
+
+Average Interest Rate
+Select Avg(int_rate) * 100 AS Average_Interest_Rate from financial_loan
+MTD Average Interest Rate
+Select Avg(int_rate) * 100 AS Average_Interest_Rate from financial_loan
+Where Month(issue_date) = 12
+
+PMTD(Previous) Average Interest Rate
+Select Avg(int_rate) * 100 AS Average_Interest_Rate from financial_loan
+Where Month(issue_date) = 11
+
+Avg DTI
+Select Avg(dti) *100 As Average_DTI from financial_loan
+MTD Avg DTI
+Select Avg(dti) *100 As Average_DTI from financial_loan
+Where Month(issue_date) = 12
+
+PMTD Avg DTI
+Select Avg(dti) *100 As Average_DTI from financial_loan
+Where Month(issue_date) = 11
+
+Good Loan Issued
+
+Good Loan Percentage
+Select (count(Case when loan_status = 'Fully Paid' or loan_status = 'current' then id END) * 100)/
+Count(id) as Good_loan_percentage from financial_loan
+
+Good Loan Applications
+Select Count(id) as Good_loan_Applications from financial_loan
+Where Loan_status = 'Fully paid' or loan_status = 'current'
+
+Good Loan Funded Amount
+Select sum(loan_amount) as Good_Loan_Funded_Amount from financial_loan
+Where Loan_status = 'Fully paid' or loan_status = 'current'
+
+Good Loan Amount Received
+Select sum(Total_payment) as Good_Loan_Amount_Received from financial_loan
+Where Loan_status = 'Fully paid' or loan_status = 'current'
+
+BAD LOAN ISSUED
+Bad Loan Percentage
+SELECT
+    (COUNT(CASE WHEN loan_status = 'Charged Off' THEN id END) * 100.0) / 
+	COUNT(id) AS Bad_Loan_Percentage
+FROM financial_loan
+
+Bad Loan Applications
+SELECT COUNT(id) AS Bad_Loan_Applications FROM financial_loan
+WHERE loan_status = 'Charged Off'
+
+Bad Loan Funded Amount
+SELECT SUM(loan_Amount) AS Bad_Loan_Funded_Amount FROM financial_loan
+WHERE loan_status = 'Charged Off'
+
+Bad Loan Amount Received
+SELECT SUM(total_payment) AS Bad_Loan_amount_received FROM financial_loan
+WHERE loan_status = 'Charged Off'
+
+
+LOAN STATUS
+	SELECT
+        loan_status,
+        COUNT(id) AS Loan_Count,
+        SUM(total_payment) AS Total_Loan_Amount_Received,
+        SUM(loan_amount) AS Total_Funded_Amount,
+        AVG(int_rate * 100) AS Interest_Rate,
+        AVG(dti * 100) AS DTI
+    FROM
+        financial_loan
+    GROUP BY
+        loan_status
+
+
+Loan status MTD
+SELECT 
+	loan_status, 
+	SUM(total_payment) AS MTD_Total_Amount_Received, 
+	SUM(loan_amount) AS MTD_Total_Funded_Amount 
+FROM financial_loan
+WHERE MONTH(issue_date) = 12 
+GROUP BY loan_status
+
+Select * FROM financial_loan
+BANK LOAN REPORT | OVERVIEW
+MONTH
+
+SELECT
+    MONTH(issue_date) AS Month_Number,  -- returns 1 to 12
+    MONTHNAME(issue_date) AS Month_Name,  -- returns January, February, etc.
+    COUNT(id) AS Total_Loan_Applications,
+    SUM(loan_amount) AS Total_Funded_Amount,
+    SUM(total_payment) AS Total_Amount_Received
+FROM financial_loan
+GROUP BY MONTH(issue_date), MONTHNAME(issue_date)
+ORDER BY MONTH(issue_date)
+
+STATE
+SELECT 
+	address_state AS State, 
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Amount_Received
+FROM financial_loan
+GROUP BY address_state
+ORDER BY address_state
+
+TERM
+SELECT 
+	term AS Term, 
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Amount_Received
+FROM financial_loan
+GROUP BY term
+ORDER BY term
+
+EMPLOYEE LENGTH
+SELECT 
+	emp_length AS Employee_Length, 
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Amount_Received
+FROM financial_loan
+GROUP BY emp_length
+ORDER BY emp_length
+
+
+PURPOSE
+SELECT 
+	purpose AS PURPOSE, 
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Amount_Received
+FROM financial_loan
+GROUP BY purpose
+ORDER BY purpose
+
+HOME OWNERSHIP
+SELECT 
+	home_ownership AS Home_Ownership, 
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Amount_Received
+FROM financial_loan
+GROUP BY home_ownership
+ORDER BY home_ownership
+
+
+SELECT 
+	purpose AS PURPOSE, 
+	COUNT(id) AS Total_Loan_Applications,
+	SUM(loan_amount) AS Total_Funded_Amount,
+	SUM(total_payment) AS Total_Amount_Received
+FROM financial_loan
+WHERE grade = 'A'
+GROUP BY purpose
+ORDER BY purpose
