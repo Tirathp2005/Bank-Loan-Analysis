@@ -1,2 +1,2 @@
 # Bank-Loan-Analysis
-This Project is related to Bank Loan
+Bank loan transations dashboard using Power bi and SQL
